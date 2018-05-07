@@ -2,16 +2,12 @@ favicon
 =======
 
 .. image:: https://travis-ci.org/scottwernervt/favicon.svg?branch=master
-   :target: https://travis-ci.org/scottwernervt/favicon
+    :target: https://travis-ci.org/scottwernervt/favicon
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
-   :target: /LICENSE
+    :target: /LICENSE
 
-Requirements
-------------
-
-* `requests <http://docs.python-requests.org/>`_
-* `beautifulsoup4 <https://www.crummy.com/software/BeautifulSoup/bs4/doc/>`_
+`favicon` is a Python library to find a website's favicon.
 
 Installation
 ------------
@@ -34,6 +30,12 @@ Usage
     Icon(url='https://www.python.org/static/apple-touch-icon-72x72-precomposed.png', width=72, height=72, format='png')
     Icon(url='https://www.python.org/static/apple-touch-icon-precomposed.png', width=0, height=0, format='png')
     Icon(url='https://www.python.org/static/favicon.ico', width=0, height=0, format='ico')
+
+Requirements
+------------
+
+* `requests <http://docs.python-requests.org/>`_
+* `beautifulsoup4 <https://www.crummy.com/software/BeautifulSoup/bs4/doc/>`_
 
 Inspiration
 -----------
