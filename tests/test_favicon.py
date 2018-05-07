@@ -1,7 +1,10 @@
 import pytest
+from bs4 import BeautifulSoup
 
 import favicon
 from favicon.favicon import dimensions, is_absolute
+
+s = BeautifulSoup('')
 
 
 def test_default(m):
@@ -67,11 +70,6 @@ def test_link_apple_touch(m):
 ])
 def test_is_absolute(url, expected):
     assert is_absolute(url) == expected
-
-
-from bs4 import BeautifulSoup
-
-s = BeautifulSoup('')
 
 
 @pytest.mark.parametrize('link,size', [
