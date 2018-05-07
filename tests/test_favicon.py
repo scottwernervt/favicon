@@ -1,4 +1,7 @@
+import pytest
+
 import favicon
+from favicon.favicon import dimensions, is_absolute
 
 
 def test_default(m):
@@ -55,3 +58,28 @@ def test_link_apple_touch(m):
     assert icon.url == 'http://mock.com/static/apple-touch-icon-144x144.png'
     assert icon.width == 144 and icon.height == 144
     assert icon.format == 'png'
+
+
+@pytest.mark.parametrize('url,expected', [
+    ('http://mock.com/favicon.ico', True),
+    ('favicon.ico', False),
+    ('/favicon.ico', False),
+])
+def test_is_absolute(url, expected):
+    assert is_absolute(url) == expected
+
+
+from bs4 import BeautifulSoup
+
+s = BeautifulSoup('')
+
+
+@pytest.mark.parametrize('link,size', [
+    (s.new_tag('link', href='logo.png', sizes='any'), (0, 0)),
+    (s.new_tag('link', href='logo.png', sizes='16x16'), (16, 16)),
+    (s.new_tag('link', href='logo.png', sizes='16x16 32x32'), (32, 32)),
+    (s.new_tag('link', href='logo.png', sizes='16x16 32x32+'), (32, 32)),
+    (s.new_tag('link', href='logo-144x144.png', sizes='any'), (144, 144)),
+])
+def test_dimensions(link, size):
+    assert dimensions(link) == size
