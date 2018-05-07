@@ -7,12 +7,10 @@ favicon
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: /LICENSE
 
-`favicon` is a Python library to find a website's favicon.
+``favicon`` is a Python library to find a website's favicon.
 
 Installation
 ------------
-
-To install favicon:
 
 .. code-block:: bash
 
