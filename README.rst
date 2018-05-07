@@ -22,7 +22,7 @@ Usage
 .. code-block:: python
 
     >>> import favicon
-    >>> icons = favicon.get('https://pypi.org/')
+    >>> icons = favicon.get('https://www.python.org/')
     Icon(url='https://www.python.org/static/apple-touch-icon-144x144-precomposed.png', width=144, height=144, format='png')
     Icon(url='https://www.python.org/static/apple-touch-icon-114x114-precomposed.png', width=114, height=114, format='png')
     Icon(url='https://www.python.org/static/apple-touch-icon-72x72-precomposed.png', width=72, height=72, format='png')
