@@ -2,9 +2,6 @@
 :copyright: (c) 2018 by Scott Werner.
 :license: MIT, see LICENSE for more details.
 """
-# TODO: Icons in manifest.json and browserconfig.xml.
-# TODO: MS icons in <meta name='msapplication-TileImage' content='icon.png'>
-
 import os
 import re
 from collections import namedtuple
@@ -103,7 +100,6 @@ def get_links(url, html):
         for link in soup.find_all('link', {'rel': rel, 'href': True}):
             href = link['href']
             if href.startswith('data:image/'):
-                # TODO: Add support for 'data:image/png;base64,...'
                 continue
 
             if is_absolute(href):
