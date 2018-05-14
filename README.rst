@@ -1,11 +1,14 @@
 favicon
 =======
 
-.. image:: https://travis-ci.org/scottwernervt/favicon.svg?branch=master
-    :target: https://travis-ci.org/scottwernervt/favicon
+.. image:: https://img.shields.io/pypi/v/favicon.svg
+    :target: https://pypi.python.org/pypi/favicon
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: /LICENSE
+
+.. image:: https://travis-ci.org/scottwernervt/favicon.svg?branch=master
+    :target: https://travis-ci.org/scottwernervt/favicon
 
 ``favicon`` is a Python library to find a website's favicon.
 
