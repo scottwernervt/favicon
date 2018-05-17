@@ -108,7 +108,8 @@ def get_links(url, html):
                 icon_url = urljoin(url, href)
 
             # bad urls: href='//cdn.network.com/favicon.png'
-            icon_url = urlparse(icon_url, scheme='https').geturl()
+            scheme = urlparse(url).scheme
+            icon_url = urlparse(icon_url, scheme=scheme).geturl()
 
             width, height = dimensions(link)
             _, ext = os.path.splitext(icon_url)
