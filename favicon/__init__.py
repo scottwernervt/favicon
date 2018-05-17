@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 __title__ = 'favicon'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Scott Werner'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2018 Scott Werner'
