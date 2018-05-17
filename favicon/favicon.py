@@ -98,7 +98,7 @@ def get_links(url, html):
     icons = set()
     for rel in LINK_RELS:
         for link in soup.find_all('link', {'rel': rel, 'href': True}):
-            href = link['href']
+            href = link['href'].strip()
             if href.startswith('data:image/'):
                 continue
 
