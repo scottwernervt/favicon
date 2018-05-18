@@ -17,7 +17,6 @@ def test_default(m):
 
     icon = icons[0]
     assert icon.url == 'http://mock.com/favicon.ico'
-    assert icon.format == 'ico'
 
 
 @pytest.mark.parametrize('link', [
@@ -40,11 +39,6 @@ def test_link_rel_attribute(m, link):
     icons = favicon.get('http://mock.com/')
     assert icons
 
-    icon = icons[0]
-    assert icon.url == 'http://mock.com/favicon.ico'
-    assert icon.width == 0 and icon.height == 0
-    assert icon.format == 'ico'
-
 
 @pytest.mark.parametrize('link,size', [
     ('<link rel="icon" href="logo.png" sizes="any">', (0, 0)),
@@ -53,6 +47,13 @@ def test_link_rel_attribute(m, link):
     ('<link rel="icon" href="logo.png" sizes="32x32 64x64">', (64, 64)),
     ('<link rel="icon" href="logo.png" sizes="64x64 32x32">', (64, 64)),
     ('<link rel="icon" href="logo-128x128.png" sizes="any">', (128, 128)),
+], ids=[
+    'any',
+    '16x16',
+    '24x24+',
+    '32x32 64x64',
+    '64x64 32x32',
+    'logo-128x128.png',
 ])
 def test_link_sizes_attribute(m, link, size):
     m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
@@ -62,8 +63,7 @@ def test_link_sizes_attribute(m, link, size):
     assert icons
 
     icon = icons[0]
-    width, height = size
-    assert icon.width == width and icon.height == height
+    assert icon.width == size[0] and icon.height == size[1]
 
 
 def test_link_apple_touch(m):
