@@ -90,9 +90,10 @@ def test_is_absolute(url, expected):
 @pytest.mark.parametrize('link,size', [
     (s.new_tag('link', href='logo.png', sizes='any'), (0, 0)),
     (s.new_tag('link', href='logo.png', sizes='16x16'), (16, 16)),
+    (s.new_tag('link', href='logo.png', sizes='16x16+'), (16, 16)),
     (s.new_tag('link', href='logo.png', sizes='16x16 32x32'), (32, 32)),
-    (s.new_tag('link', href='logo.png', sizes='16x16 32x32+'), (32, 32)),
-    (s.new_tag('link', href='logo-144x144.png', sizes='any'), (144, 144)),
-])
+    (s.new_tag('link', href='logo.png', sizes='32x32 16x16'), (32, 32)),
+    (s.new_tag('link', href='logo-64x64.png', sizes='any'), (64, 64)),
+], ids=lambda l: str(l['sizes']) if not isinstance(l, tuple) else None)
 def test_dimensions(link, size):
     assert dimensions(link) == size
