@@ -66,6 +66,34 @@ def test_link_sizes_attribute(m, link, size):
     assert icon.width == size[0] and icon.height == size[1]
 
 
+@pytest.mark.parametrize('link,url', [
+    ('<link rel="icon" href="logo.png">', 'http://mock.com/logo.png'),
+    ('<link rel="icon" href="/static/logo.png">',
+     'http://mock.com/static/logo.png'),
+    ('<link rel="icon" href="https://cdn.mock.com/logo.png">',
+     'https://cdn.mock.com/logo.png'),
+    ('<link rel="icon" href="//cdn.mock.com/logo.png">',
+     'http://cdn.mock.com/logo.png'),
+    ('<link rel="icon" href="http://mock.com/logo.png?v2">',
+     'http://mock.com/logo.png?v2'),
+], ids=[
+    'filename',
+    'relative',
+    'https',
+    'forward slashes',
+    'query string',
+])
+def test_link_href_attribute(m, link, url):
+    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
+    m.get('http://mock.com/', text=link)
+
+    icons = favicon.get('http://mock.com/')
+    assert icons
+
+    icon = icons[0]
+    assert icon.url == url
+
+
 @pytest.mark.parametrize('url,expected', [
     ('http://mock.com/favicon.ico', True),
     ('favicon.ico', False),
