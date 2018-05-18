@@ -106,18 +106,18 @@ def get_links(url, html):
                 continue
 
             if is_absolute(href):
-                icon_url = href
+                url_parsed = href
             else:
-                icon_url = urljoin(url, href)
+                url_parsed = urljoin(url, href)
 
-            # bad urls: href='//cdn.network.com/favicon.png'
+            # bad urls: href='//cdn.network.com/favicon.png' or `icon.png?v2`
             scheme = urlparse(url).scheme
-            icon_url = urlparse(icon_url, scheme=scheme).geturl()
+            url_parsed = urlparse(url_parsed, scheme=scheme)
 
             width, height = dimensions(link)
-            _, ext = os.path.splitext(icon_url)
+            _, ext = os.path.splitext(url_parsed.path)
 
-            icon = Icon(icon_url, width, height, ext[1:].lower())
+            icon = Icon(url_parsed.geturl(), width, height, ext[1:].lower())
             icons.add(icon)
 
     return icons
