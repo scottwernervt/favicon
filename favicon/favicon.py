@@ -99,7 +99,7 @@ def get_links(url, html):
     for rel in LINK_RELS:
         for link in soup.find_all('link', {'rel': rel, 'href': True}):
             href = link['href'].strip()
-            if href.startswith('data:image/'):
+            if not href or href.startswith('data:image/'):
                 continue
 
             if is_absolute(href):
