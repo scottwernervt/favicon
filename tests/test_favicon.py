@@ -17,10 +17,22 @@ def test_default(m):
     assert icons[0].url == 'http://mock.com/favicon.ico'
 
 
-def test_link_icon(m):
+@pytest.mark.parametrize('link', [
+    '<link rel="icon" href="favicon.ico">',
+    '<link rel="ICON" href="favicon.ico">',
+    '<link rel="shortcut icon" href="favicon.ico">',
+    '<link rel="apple-touch-icon" href="favicon.ico">',
+    '<link rel="apple-touch-icon-precomposed" href="favicon.ico">',
+], ids=[
+    'icon',
+    'ICON',
+    'shortcut icon',
+    'apple-touch-icon',
+    'apple-touch-icon-precomposed',
+])
+def test_link_rel_attribute(m, link):
     m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
-    m.get('http://mock.com/',
-          text='<link rel="icon" type="image/x-icon" href="favicon.ico">')
+    m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
     assert icons
