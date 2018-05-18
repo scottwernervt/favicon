@@ -14,7 +14,10 @@ def test_default(m):
 
     icons = favicon.get('http://mock.com/')
     assert icons
-    assert icons[0].url == 'http://mock.com/favicon.ico'
+
+    icon = icons[0]
+    assert icon.url == 'http://mock.com/favicon.ico'
+    assert icon.format == 'ico'
 
 
 @pytest.mark.parametrize('link', [
