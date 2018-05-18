@@ -46,7 +46,7 @@ def test_link_rel_attribute(m, link):
     assert icon.format == 'ico'
 
 
-def test_link_sizes(m):
+def test_link_sizes_attribute(m):
     m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/',
           text='<link rel="icon" '
