@@ -83,7 +83,7 @@ def test_link_sizes_attribute(m, link, size):
     'relative',
     'https',
     'forward slashes',
-    'query string',
+    'query string (#7)',
 ])
 def test_link_href_attribute(m, link, url):
     m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
