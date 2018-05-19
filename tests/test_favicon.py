@@ -27,7 +27,7 @@ def test_default(m):
     '<link rel="apple-touch-icon-precomposed" href="favicon.ico">',
 ], ids=[
     'icon',
-    'ICON',
+    'ICON (#7)',
     'shortcut icon',
     'apple-touch-icon',
     'apple-touch-icon-precomposed',
@@ -68,6 +68,7 @@ def test_link_sizes_attribute(m, link, size):
 
 @pytest.mark.parametrize('link,url', [
     ('<link rel="icon" href="logo.png">', 'http://mock.com/logo.png'),
+    ('<link rel="icon" href="logo.png\t">', 'http://mock.com/logo.png'),
     ('<link rel="icon" href="/static/logo.png">',
      'http://mock.com/static/logo.png'),
     ('<link rel="icon" href="https://cdn.mock.com/logo.png">',
@@ -78,6 +79,7 @@ def test_link_sizes_attribute(m, link, size):
      'http://mock.com/logo.png?v2'),
 ], ids=[
     'filename',
+    'filename \\t (#5)',
     'relative',
     'https',
     'forward slashes',
