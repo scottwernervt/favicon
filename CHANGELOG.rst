@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+0.3.0 (2018-05-18)
+++++++++++++++++
+
+* Fav icon not found for microsoft.com (`#5 <https://github.com/scottwernervt/favicon/issues/7>`_)
+
 0.2.0 (2018-05-17)
 ++++++++++++++++
 
