@@ -5,7 +5,11 @@
 import os
 import re
 from collections import namedtuple
-from urllib.parse import urljoin, urlparse
+
+try:
+    from urllib.parse import urljoin, urlparse
+except ImportError:
+    from urlparse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
