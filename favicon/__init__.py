@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """favicon
 :copyright: (c) 2018 by Scott Werner.
 :license: MIT, see LICENSE for more details.

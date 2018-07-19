@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """favicon
 :copyright: (c) 2018 by Scott Werner.
 :license: MIT, see LICENSE for more details.
@@ -154,7 +155,7 @@ def dimensions(link):
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
-        width, height = re.split(r'[x×]', size[0])
+        width, height = re.split(r'[x\xd7]', size[0])
     else:
         size = SIZE_RE.search(link['href'])
         if size:
