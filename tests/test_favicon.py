@@ -43,6 +43,7 @@ def test_link_rel_attribute(m, link):
 @pytest.mark.parametrize('link,size', [
     ('<link rel="icon" href="logo.png" sizes="any">', (0, 0)),
     ('<link rel="icon" href="logo.png" sizes="16x16">', (16, 16)),
+    ('<link rel="icon" href="logo.png" sizes="16×16">', (16, 16)),
     ('<link rel="icon" href="logo.png" sizes="24x24+">', (24, 24)),
     ('<link rel="icon" href="logo.png" sizes="32x32 64x64">', (64, 64)),
     ('<link rel="icon" href="logo.png" sizes="64x64 32x32">', (64, 64)),
@@ -50,6 +51,7 @@ def test_link_rel_attribute(m, link):
 ], ids=[
     'any',
     '16x16',
+    '16×16',
     '24x24+',
     '32x32 64x64',
     '64x64 32x32',

@@ -154,7 +154,7 @@ def dimensions(link):
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
-        width, height = size[0].split('x')
+        width, height = re.split(r'[x×]', size[0])
     else:
         size = SIZE_RE.search(link['href'])
         if size:
