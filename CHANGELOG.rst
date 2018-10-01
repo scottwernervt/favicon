@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+0.4.1 (2018-10-01)
+++++++++++++++++++
+
+* Update `requirements.txt` and `dev-requirements.txt`
+
 0.4.0 (2018-07-19)
 ++++++++++++++++++
 
