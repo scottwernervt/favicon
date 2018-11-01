@@ -3,6 +3,7 @@ graft tests
 
 include AUTHORS.rst
 include CHANGELOG.rst
+include CONTRIBUTING.rst
 include LICENSE
 include README.rst
 
