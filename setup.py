@@ -1,42 +1,55 @@
-import os
+import io
 import re
+from glob import glob
+from os.path import basename, dirname, join, splitext
 
 from setuptools import find_packages, setup
 
-ROOT = os.path.abspath(os.path.dirname(__file__))
-VERSION_RE = re.compile(r'''__version__ = ['"]([0-9.]+)['"]''')
 
-install_requires = ['requests>=2.1.0', 'beautifulsoup4>=4.3.2']
+def read(*names, **kwargs):
+    with io.open(
+            join(dirname(__file__), *names),
+            encoding=kwargs.get('encoding', 'utf8')
+    ) as fh:
+        return fh.read()
 
-
-def get_version():
-    init = open(os.path.join(ROOT, 'favicon', '__init__.py')).read()
-    return VERSION_RE.search(init).group(1)
-
-
-download_url = 'https://github.com/scottwernervt/favicon' \
-               'archive/%s.tar.gz' % get_version()
 
 setup(
     name='favicon',
-    version=get_version(),
+    version='0.4.2',
+    license='MIT',
+    description="Get a website's favicon.",
+    long_description='%s\n%s' % (
+        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub(
+            '', read('README.rst')),
+        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+    ),
     author='Scott Werner',
     author_email='scott.werner.vt@gmail.com',
-    description="Find a website's favicon",
-    long_description=open('README.rst').read(),
-    license='MIT',
-    platforms='any',
+    url='https://github.com/scottwernervt/favicon',
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    include_package_data=True,
+    zip_safe=False,
+    classifiers=[
+        'Programming Language :: Python',
+        'License :: OSI Approved :: MIT License',
+        'Intended Audience :: Developers',
+        'Topic :: Utilities',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
+    ],
     keywords=' '.join([
         'favicon',
-        'favicons',
         'icon',
-        'icons',
     ]),
-    url='https://github.com/scottwernervt/favicon',
-    download_url=download_url,
-    install_requires=install_requires,
+    install_requires=[
+        'requests>=2.1.0',  # Apache 2.0
+        'beautifulsoup4>=4.3.2',  # BSD
+    ],
     extras_require={
-        'tests': 'pytest',  # MIT
+
     },
     setup_requires=[
         'pytest-runner',  # MIT
@@ -46,14 +59,4 @@ setup(
         'requests-mock',  # Apache 2
     ],
     test_suite='tests',
-    packages=find_packages(exclude=['contrib', 'docs' 'tests*']),
-    include_package_data=True,
-    classifiers=[
-        'Programming Language :: Python',
-        'License :: OSI Approved :: MIT License',
-        'Intended Audience :: Developers',
-        'Topic :: Utilities',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
-    ],
 )
