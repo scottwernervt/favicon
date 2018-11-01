@@ -2,7 +2,6 @@
 favicon
 ========
 
-
 .. start-badges
 
 .. image:: https://img.shields.io/pypi/v/favicon.svg
@@ -14,11 +13,9 @@ favicon
 .. image:: https://travis-ci.org/scottwernervt/favicon.svg?branch=master
    :target: https://travis-ci.org/scottwernervt/favicon
 
-``favicon`` is a Python library to find a website's favicon.
-
 .. end-badges
 
-Get a website's favicon.
+``favicon`` is a Python library to find a website's favicon.
 
 Installation
 ============
