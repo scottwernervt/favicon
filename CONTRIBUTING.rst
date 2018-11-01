@@ -14,13 +14,6 @@ When `reporting a bug <https://github.com/scottwernervt/favicon/issues>`_ please
     * Any details about your local setup that might be helpful in troubleshooting.
     * Detailed steps to reproduce the bug.
 
-Documentation improvements
-==========================
-
-Nameless could always use more documentation, whether as part of the
-official Nameless docs, in docstrings, or even on the web in blog posts,
-articles, and such.
-
 Feature requests and feedback
 =============================
 
