@@ -57,18 +57,18 @@ def get(url, headers=None):
 
     icons = set()
 
-    default_icon = get_default(response.url, headers)
+    default_icon = default(response.url, headers)
     if default_icon:
         icons.add(default_icon)
 
-    link_icons = get_links(response.url, response.text)
+    link_icons = tags(response.url, response.text)
     if link_icons:
         icons.update(link_icons)
 
     return sorted(icons, key=lambda i: i.width + i.height, reverse=True)
 
 
-def get_default(url, headers):
+def default(url, headers):
     """Get icon using default filename favicon.ico.
 
     :param url: Url for site.
@@ -86,7 +86,7 @@ def get_default(url, headers):
         return Icon(response.url, 0, 0, 'ico')
 
 
-def get_links(url, html):
+def tags(url, html):
     """Get icons from link tags.
 
     :param url: Url for site.
