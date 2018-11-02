@@ -4,6 +4,8 @@ Changelog
 0.4.2 (Unreleased)
 ------------------
 
+* Set bs4 parser to ``html.parser`` (`#13 <https://github.com/scottwernervt/favicon/issues/13>`_).
+* Use ``src`` package structure (`#11 <https://github.com/scottwernervt/favicon/issues/11>`_).
 
 0.4.1 (2018-10-01)
 ------------------

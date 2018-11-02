@@ -98,7 +98,7 @@ def get_links(url, html):
     :return: Icons found.
     :rtype: set
     """
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, features='html.parser')
 
     icons = set()
     for rel in LINK_RELS:
