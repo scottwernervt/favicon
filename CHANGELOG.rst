@@ -1,9 +1,10 @@
 Changelog
 =========
 
-0.4.2 (Unreleased)
+0.5.0 (2018-11-02)
 ------------------
 
+* Add support for meta tags (`#15 <https://github.com/scottwernervt/favicon/pull/15>`_).
 * Set bs4 parser to ``html.parser`` (`#13 <https://github.com/scottwernervt/favicon/issues/13>`_).
 * Use ``src`` package structure (`#11 <https://github.com/scottwernervt/favicon/issues/11>`_).
 
