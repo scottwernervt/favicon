@@ -30,6 +30,11 @@ LINK_RELS = [
     'apple-touch-icon-precomposed',
 ]
 
+META_NAMES = [
+    'msapplication-TileImage',
+    'og:image',
+]
+
 SIZE_RE = re.compile(
     r'(?P<width>\d{2,4})x(?P<height>\d{2,4})',
     flags=re.IGNORECASE)
@@ -87,7 +92,12 @@ def default(url, headers):
 
 
 def tags(url, html):
-    """Get icons from link tags.
+    """Get icons from link and meta tags.
+
+    .. code-block:: html
+
+       <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon.png">
+       <meta name="msapplication-TileImage" content="favicon.png">
 
     :param url: Url for site.
     :type url: str
@@ -100,30 +110,43 @@ def tags(url, html):
     """
     soup = BeautifulSoup(html, features='html.parser')
 
-    icons = set()
+    link_tags = set()
     for rel in LINK_RELS:
-        for link in soup.find_all('link', attrs={
+        for link_tag in soup.find_all('link', attrs={
             'rel': lambda r: r and r.lower() == rel,
             'href': True
         }):
-            href = link['href'].strip()
-            if not href or href.startswith('data:image/'):
-                continue
+            link_tags.add(link_tag)
 
-            if is_absolute(href):
-                url_parsed = href
-            else:
-                url_parsed = urljoin(url, href)
+    meta_tags = set()
+    for meta_tag in soup.find_all('meta', attrs={'content': True}):
+        meta_type = meta_tag.get('name') or meta_tag.get('property')
+        for name in META_NAMES:
+            if meta_type.lower() == name.lower():
+                meta_tags.add(meta_tag)
 
-            # bad urls: href='//cdn.network.com/favicon.png' or `icon.png?v2`
-            scheme = urlparse(url).scheme
-            url_parsed = urlparse(url_parsed, scheme=scheme)
+    icons = set()
+    for tag in link_tags | meta_tags:
+        href = tag.get('href') or tag.get('content')
+        href = href.strip()
 
-            width, height = dimensions(link)
-            _, ext = os.path.splitext(url_parsed.path)
+        if not href or href.startswith('data:image/'):
+            continue
 
-            icon = Icon(url_parsed.geturl(), width, height, ext[1:].lower())
-            icons.add(icon)
+        if is_absolute(href):
+            url_parsed = href
+        else:
+            url_parsed = urljoin(url, href)
+
+        # repair '//cdn.network.com/favicon.png' or `icon.png?v2`
+        scheme = urlparse(url).scheme
+        url_parsed = urlparse(url_parsed, scheme=scheme)
+
+        width, height = dimensions(tag)
+        _, ext = os.path.splitext(url_parsed.path)
+
+        icon = Icon(url_parsed.geturl(), width, height, ext[1:].lower())
+        icons.add(icon)
 
     return icons
 
@@ -140,24 +163,23 @@ def is_absolute(url):
     return bool(urlparse(url).netloc)
 
 
-def dimensions(link):
+def dimensions(tag):
     """Get icon dimensions from size attribute or icon filename.
 
-    <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon.png">
-
-    :param link: Link tag.
-    :type link: :class:`bs4.element.Tag`
+    :param tag: Link or meta tag.
+    :type tag: :class:`bs4.element.Tag`
 
     :return: If found, width and height, else (0,0).
     :rtype: tuple(int, int)
     """
-    sizes = link.get('sizes', '')
+    sizes = tag.get('sizes', '')
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
         width, height = re.split(r'[x\xd7]', size[0])
     else:
-        size = SIZE_RE.search(link['href'])
+        filename = tag.get('href') or tag.get('content')
+        size = SIZE_RE.search(filename)
         if size:
             width, height = size.group('width'), size.group('height')
         else:

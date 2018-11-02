@@ -99,6 +99,23 @@ def test_link_href_attribute(m, link, url):
     assert icon.url == url
 
 
+@pytest.mark.parametrize('meta_tag', [
+    '<meta name="msapplication-TileImage" content="favicon.ico">',
+    '<meta name="msapplication-tileimage" content="favicon.ico">',
+    '<meta property="og:image" content="favicon.png">',
+], ids=[
+    'msapplication-TileImage',
+    'msapplication-tileimage',
+    'og:image',
+])
+def test_meta_content_attribute(m, meta_tag):
+    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
+    m.get('http://mock.com/', text=meta_tag)
+
+    icons = favicon.get('http://mock.com/')
+    assert icons
+
+
 @pytest.mark.parametrize('url,expected', [
     ('http://mock.com/favicon.ico', True),
     ('favicon.ico', False),
