@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import favicon
 from favicon.favicon import is_absolute
 
-s = BeautifulSoup('')
+s = BeautifulSoup(features='html.parser')
 
 
 def test_default(m):
