@@ -16,7 +16,7 @@ def read(*names, **kwargs):
 
 setup(
     name='favicon',
-    version='0.5.0',
+    version='0.5.1',
     license='MIT',
     description="Get a website's favicon.",
     long_description='%s\n%s' % (
