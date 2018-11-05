@@ -34,7 +34,6 @@ def test_default(m):
     'apple-touch-icon-precomposed',
 ])
 def test_link_rel_attribute(m, link):
-    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -59,7 +58,6 @@ def test_link_rel_attribute(m, link):
     'new york times (#9)',
 ])
 def test_link_sizes_attribute(m, link, size):
-    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -89,7 +87,6 @@ def test_link_sizes_attribute(m, link, size):
     'query string (#7)',
 ])
 def test_link_href_attribute(m, link, url):
-    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -109,7 +106,6 @@ def test_link_href_attribute(m, link, url):
     'og:image',
 ])
 def test_meta_content_attribute(m, meta_tag):
-    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/', text=meta_tag)
 
     icons = favicon.get('http://mock.com/')
@@ -117,7 +113,6 @@ def test_meta_content_attribute(m, meta_tag):
 
 
 def test_invalid_meta_tag(m):
-    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
     m.get('http://mock.com/',
           text='<meta content="en-US" data-rh="true" itemprop="inLanguage"/>')
 
