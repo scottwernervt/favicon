@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5.0 (2018-11-02)
+0.5.0 (2018-11-05)
 ------------------
 
 * Add support for meta tags (`#15 <https://github.com/scottwernervt/favicon/pull/15>`_).
