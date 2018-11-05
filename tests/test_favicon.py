@@ -33,7 +33,7 @@ def test_default(m):
     'apple-touch-icon',
     'apple-touch-icon-precomposed',
 ])
-def test_link_rel_attribute(m, link):
+def test_link_tag(m, link):
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -57,7 +57,7 @@ def test_link_rel_attribute(m, link):
     'logo-128x128.png',
     'new york times (#9)',
 ])
-def test_link_sizes_attribute(m, link, size):
+def test_link_tag_sizes_attribute(m, link, size):
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -86,7 +86,7 @@ def test_link_sizes_attribute(m, link, size):
     'forward slashes',
     'query string (#7)',
 ])
-def test_link_href_attribute(m, link, url):
+def test_link_tag_href_attribute(m, link, url):
     m.get('http://mock.com/', text=link)
 
     icons = favicon.get('http://mock.com/')
@@ -105,7 +105,7 @@ def test_link_href_attribute(m, link, url):
     'msapplication-tileimage',
     'og:image',
 ])
-def test_meta_content_attribute(m, meta_tag):
+def test_meta_tag(m, meta_tag):
     m.get('http://mock.com/', text=meta_tag)
 
     icons = favicon.get('http://mock.com/')
@@ -125,5 +125,5 @@ def test_invalid_meta_tag(m):
     ('favicon.ico', False),
     ('/favicon.ico', False),
 ])
-def test_is_absolute(url, expected):
+def test_is_absolute_helper(url, expected):
     assert is_absolute(url) == expected
