@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.1 (2018-11-05)
+------------------
+
+* Fix 'NoneType' object has no attribute 'lower' for meta tags (`#16 <https://github.com/scottwernervt/favicon/issues/16>`_).
+
 0.5.0 (2018-11-05)
 ------------------
 

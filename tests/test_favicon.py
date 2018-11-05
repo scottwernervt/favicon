@@ -116,6 +116,15 @@ def test_meta_content_attribute(m, meta_tag):
     assert icons
 
 
+def test_invalid_meta_tag(m):
+    m.head('http://mock.com/favicon.ico', text='Not Found', status_code=404)
+    m.get('http://mock.com/',
+          text='<meta content="en-US" data-rh="true" itemprop="inLanguage"/>')
+
+    icons = favicon.get('http://mock.com/')
+    assert not icons
+
+
 @pytest.mark.parametrize('url,expected', [
     ('http://mock.com/favicon.ico', True),
     ('favicon.ico', False),
