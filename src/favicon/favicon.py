@@ -120,9 +120,10 @@ def tags(url, html):
 
     meta_tags = set()
     for meta_tag in soup.find_all('meta', attrs={'content': True}):
-        meta_type = meta_tag.get('name') or meta_tag.get('property')
+        meta_type = meta_tag.get('name') or meta_tag.get('property') or ''
+        meta_type = meta_type.lower()
         for name in META_NAMES:
-            if meta_type.lower() == name.lower():
+            if meta_type == name.lower():
                 meta_tags.add(meta_tag)
 
     icons = set()
