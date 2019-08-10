@@ -55,8 +55,8 @@ setup(
         'icon',
     ]),
     install_requires=[
-        'requests>=2.1.0',  # Apache 2.0
-        'beautifulsoup4>=4.3.2',  # BSD
+        'requests>=2.21.0',  # Apache 2.0
+        'beautifulsoup4>=4.7.0',  # BSD
     ],
     extras_require={
 
