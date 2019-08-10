@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.0 (2019-08-10)
+------------------
+
+* Upgrade ``beautifulsoup4`` and ``requests`` package dependencies.
+
 0.5.1 (2018-11-05)
 ------------------
 
