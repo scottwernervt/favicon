@@ -56,7 +56,7 @@ Download largest icon:
 
    # /tmp/python-favicon.png
 
-`Request library <https://2.python-requests.org/>`_ parameters can be passed to `favicon.get()` as keyword
+`Request library <https://2.python-requests.org/>`_ parameters can be passed to ``favicon.get()`` as keyword
 arguments:
 
 .. code-block:: python

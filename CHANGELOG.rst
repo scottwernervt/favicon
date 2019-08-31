@@ -4,10 +4,10 @@ Changelog
 0.7.0 (2019-08-31)
 ------------------
 
-* Handle empty `href` and `content` attribute values (`#22 <https://github.com/scottwernervt/favicon/issues/22>`_).
-* Support passing request library parameters to `favicon.get()` (`#21 <https://github.com/scottwernervt/favicon/issues/21>`_).
+* Handle empty ``href`` and ``content`` attribute values (`#22 <https://github.com/scottwernervt/favicon/issues/22>`_).
+* Support passing request library parameters to ``favicon.get()`` (`#21 <https://github.com/scottwernervt/favicon/issues/21>`_).
 
-  * Deprecate `headers` argument. Use keyword arguments: `favicon.get(url, headers={'User-Agent'; 'my-agent'}`.
+  * Deprecate ``headers`` argument. Use keyword arguments: ``favicon.get(url, headers={'User-Agent'; 'my-agent'}``.
 
 0.6.0 (2019-08-10)
 ------------------
