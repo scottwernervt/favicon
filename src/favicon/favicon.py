@@ -19,8 +19,8 @@ __all__ = ['get', 'Icon']
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) '
-                  'AppleWebKit/537.36 (KHTML, like Gecko) '
-                  'Chrome/33.0.1750.152 Safari/537.36',
+    'AppleWebKit/537.36 (KHTML, like Gecko) '
+    'Chrome/33.0.1750.152 Safari/537.36'
 }
 
 LINK_RELS = [
@@ -30,14 +30,9 @@ LINK_RELS = [
     'apple-touch-icon-precomposed',
 ]
 
-META_NAMES = [
-    'msapplication-TileImage',
-    'og:image',
-]
+META_NAMES = ['msapplication-TileImage', 'og:image']
 
-SIZE_RE = re.compile(
-    r'(?P<width>\d{2,4})x(?P<height>\d{2,4})',
-    flags=re.IGNORECASE)
+SIZE_RE = re.compile(r'(?P<width>\d{2,4})x(?P<height>\d{2,4})', flags=re.IGNORECASE)
 
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
@@ -114,10 +109,9 @@ def tags(url, html):
 
     link_tags = set()
     for rel in LINK_RELS:
-        for link_tag in soup.find_all('link', attrs={
-            'rel': lambda r: r and r.lower() == rel,
-            'href': True
-        }):
+        for link_tag in soup.find_all(
+            'link', attrs={'rel': lambda r: r and r.lower() == rel, 'href': True}
+        ):
             link_tags.add(link_tag)
 
     meta_tags = set()
