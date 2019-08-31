@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """favicon
-:copyright: (c) 2018 by Scott Werner.
+:copyright: (c) 2019 by Scott Werner.
 :license: MIT, see LICENSE for more details.
 """
 import os
@@ -42,27 +42,29 @@ SIZE_RE = re.compile(
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
-def get(url, headers=None):
+def get(url, *args, **request_kwargs):
     """Get all fav icons for a url.
 
     :param url: Homepage.
     :type url: str
 
-    :param headers: Request headers.
-    :type headers: dict or None
+    :param request_kwargs: Request headers argument.
+    :type request_kwargs: Dict
 
     :return: List of fav icons found sorted by icon dimension.
     :rtype: list[:class:`Icon`]
     """
-    if not headers:
-        headers = HEADERS
+    if args:  # c
+        request_kwargs.setdefault('headers', args[0])
+    request_kwargs.setdefault('headers', HEADERS)
+    request_kwargs.setdefault('allow_redirects', True)
 
-    response = requests.get(url, headers=headers, allow_redirects=True)
+    response = requests.get(url, **request_kwargs)
     response.raise_for_status()
 
     icons = set()
 
-    default_icon = default(response.url, headers)
+    default_icon = default(response.url, **request_kwargs)
     if default_icon:
         icons.add(default_icon)
 
@@ -73,20 +75,20 @@ def get(url, headers=None):
     return sorted(icons, key=lambda i: i.width + i.height, reverse=True)
 
 
-def default(url, headers):
+def default(url, **request_kwargs):
     """Get icon using default filename favicon.ico.
 
     :param url: Url for site.
     :type url: str
 
-    :param headers: Request headers.
-    :type headers: dict
+    :param request_kwargs: Request headers argument.
+    :type request_kwargs: Dict
 
     :return: Icon or None.
     :rtype: :class:`Icon` or None
     """
     favicon_url = urljoin(url, 'favicon.ico')
-    response = requests.head(favicon_url, headers=headers, allow_redirects=True)
+    response = requests.head(favicon_url, **request_kwargs)
     if response.status_code == 200:
         return Icon(response.url, 0, 0, 'ico')
 
