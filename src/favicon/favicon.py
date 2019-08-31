@@ -124,7 +124,7 @@ def tags(url, html):
 
     icons = set()
     for tag in link_tags | meta_tags:
-        href = tag.get('href') or tag.get('content')
+        href = tag.get('href', '') or tag.get('content', '')
         href = href.strip()
 
         if not href or href.startswith('data:image/'):

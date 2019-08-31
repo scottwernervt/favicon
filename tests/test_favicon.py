@@ -116,6 +116,16 @@ def test_link_tag_href_attribute(m, link, url):
     assert icon.url == url
 
 
+def test_link_tag_empty_href_attribute(m):
+    """'NoneType' object has no attribute 'strip' #22"""
+    m.get('http://mock.com/', text='<link rel="icon" href="">')
+
+    with pytest.warns(None):
+        icons = favicon.get('http://mock.com/')
+
+    assert not icons
+
+
 @pytest.mark.parametrize(
     'meta_tag',
     [
@@ -143,6 +153,7 @@ def test_invalid_meta_tag(m):
 
 
 def test_request_kwargs(m):
+    """Add request timeout #21"""
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0'
     }
