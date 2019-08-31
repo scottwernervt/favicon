@@ -56,6 +56,17 @@ Download largest icon:
 
    # /tmp/python-favicon.png
 
+`Request library <https://2.python-requests.org/>`_ parameters can be passed to `favicon.get()` as keyword
+arguments:
+
+.. code-block:: python
+
+   import favicon
+
+   user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+   headers = {'User-Agent': user_agent}
+   favicon.get('https://www.python.org/', headers=headers, timeout=2)
+
 Requirements
 ============
 
