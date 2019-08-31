@@ -120,6 +120,20 @@ def test_invalid_meta_tag(m):
     assert not icons
 
 
+def test_request_kwargs(m):
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0'}
+    m.get('http://mock.com/', request_headers=headers, text='body')
+
+    # raises requests_mock.exceptions.NoMockAddress if headers do not match
+    # https://requests-mock.readthedocs.io/en/latest/matching.html#request-headers
+    with pytest.warns(None):
+        favicon.get('http://mock.com/', headers=headers)
+
+    # Test deprecated header argument
+    with pytest.warns(None):
+        favicon.get('http://mock.com/', headers=headers)
+
+
 @pytest.mark.parametrize('url,expected', [
     ('http://mock.com/favicon.ico', True),
     ('favicon.ico', False),
