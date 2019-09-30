@@ -8,9 +8,9 @@ import re
 from collections import namedtuple
 
 try:
-    from urllib.parse import urljoin, urlparse
+    from urllib.parse import urljoin, urlparse, urlunparse
 except ImportError:
-    from urlparse import urljoin, urlparse
+    from urlparse import urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -82,7 +82,8 @@ def default(url, **request_kwargs):
     :return: Icon or None.
     :rtype: :class:`Icon` or None
     """
-    favicon_url = urljoin(url, 'favicon.ico')
+    parsed = urlparse(url)
+    favicon_url = urlunparse((parsed.scheme, parsed.netloc, 'favicon.ico', '', '', ''))
     response = requests.head(favicon_url, **request_kwargs)
     if response.status_code == 200:
         return Icon(response.url, 0, 0, 'ico')

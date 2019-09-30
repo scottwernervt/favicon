@@ -8,16 +8,41 @@ from favicon.favicon import is_absolute
 s = BeautifulSoup(features='html.parser')
 
 
-def test_default(m):
-    m.get('http://mock.com/', text='body')
-    m.head('http://mock.com/favicon.ico', text='icon')
-    m.get('http://mock.com/favicon.ico', text='icon')
+@pytest.mark.parametrize(
+    'url,expected',
+    [
+        ('http://mock.com/', 'http://mock.com/favicon.ico'),
+        ('https://mock.com/', 'https://mock.com/favicon.ico'),
+        ('http://mock.com/mock/', 'http://mock.com/favicon.ico'),
+        ('http://mock.com/mock/index.html', 'http://mock.com/favicon.ico'),
+        (
+            'http://mock.com/mock/index.html?q=mock',
+            'http://mock.com/favicon.ico'
+        ),
+        (
+            'http://mock.com:80/mock/index.html?q=mock',
+            'http://mock.com:80/favicon.ico'
+        ),
+    ],
+    ids=[
+        'default',
+        'https',
+        'folder',
+        'file',
+        'parameter',
+        'port',
+    ],
+)
+def test_default(m, url, expected):
+    m.get(url, text='body')
+    m.head(expected, text='icon')
+    m.get(expected, text='icon')
 
-    icons = favicon.get('http://mock.com/')
+    icons = favicon.get(url)
     assert icons
 
     icon = icons[0]
-    assert icon.url == 'http://mock.com/favicon.ico'
+    assert icon.url == expected
 
 
 @pytest.mark.parametrize(
