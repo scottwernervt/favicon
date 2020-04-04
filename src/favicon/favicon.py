@@ -5,6 +5,8 @@
 """
 import os
 import re
+import warnings
+
 from collections import namedtuple
 
 try:
@@ -13,6 +15,7 @@ except ImportError:
     from urlparse import urljoin, urlparse, urlunparse
 
 import requests
+
 from bs4 import BeautifulSoup
 
 __all__ = ['get', 'Icon']
@@ -49,8 +52,13 @@ def get(url, *args, **request_kwargs):
     :return: List of fav icons found sorted by icon dimension.
     :rtype: list[:class:`Icon`]
     """
-    if args:  # c
+    if args:  # backwards compatible with <= v0.6.0
+        warnings.warn(
+            "headers arg is deprecated. Use headers key in request_kwargs dict.",
+            DeprecationWarning
+        )
         request_kwargs.setdefault('headers', args[0])
+
     request_kwargs.setdefault('headers', HEADERS)
     request_kwargs.setdefault('allow_redirects', True)
 
