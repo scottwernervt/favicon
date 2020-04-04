@@ -184,14 +184,11 @@ def test_request_kwargs(m):
     }
     m.get('http://mock.com/', request_headers=headers, text='body')
 
-    # raises requests_mock.exceptions.NoMockAddress if headers do not match
-    # https://requests-mock.readthedocs.io/en/latest/matching.html#request-headers
-    with pytest.warns(None):
-        favicon.get('http://mock.com/', headers=headers)
+    favicon.get('http://mock.com/', headers=headers)
 
     # Test deprecated header argument
-    with pytest.warns(None):
-        favicon.get('http://mock.com/', headers=headers)
+    with pytest.warns(DeprecationWarning):
+        favicon.get('http://mock.com/', headers)
 
 
 @pytest.mark.parametrize(
