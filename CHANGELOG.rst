@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.1 (2020-06-17)
+------------------
+
+* Added support for receiving HTML input
+* Fixed issue with dimensions(tag) not working for some websites
+
 0.7.0 (2019-08-31)
 ------------------
 
