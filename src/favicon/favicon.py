@@ -40,13 +40,14 @@ SIZE_RE = re.compile(r'(?P<width>\d{2,4})x(?P<height>\d{2,4})', flags=re.IGNOREC
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
-def get(url, *args, html=None, **request_kwargs):
+def get(url, *args, html_override=None, **request_kwargs):
     """Get all fav icons for a url.
 
     :param url: Homepage.
     :type url: str
 
-    :param html: HTML input, as string. Will be used instead of an HTTP response from the `url`.
+    :param html_override: HTML input, as string. Will be used instead of an HTTP response from the `url`.
+    :type html_override: str or None
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -64,11 +65,11 @@ def get(url, *args, html=None, **request_kwargs):
     request_kwargs.setdefault('headers', HEADERS)
     request_kwargs.setdefault('allow_redirects', True)
 
-    if html is None:
+    if html_override is None:
         response = requests.get(url, **request_kwargs)
         response.raise_for_status()
         final_url = response.url
-        html = response.text
+        html_override = response.text
     else:
         final_url = url
 
@@ -78,7 +79,7 @@ def get(url, *args, html=None, **request_kwargs):
     if default_icon:
         icons.add(default_icon)
 
-    link_icons = tags(final_url, html)
+    link_icons = tags(final_url, html_override)
     if link_icons:
         icons.update(link_icons)
 
