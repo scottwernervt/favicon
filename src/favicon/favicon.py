@@ -40,11 +40,14 @@ SIZE_RE = re.compile(r'(?P<width>\d{2,4})x(?P<height>\d{2,4})', flags=re.IGNOREC
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
-def get(url, *args, **request_kwargs):
+def get(url, *args, html_override=None, **request_kwargs):
     """Get all fav icons for a url.
 
     :param url: Homepage.
     :type url: str
+
+    :param html_override: HTML input, as string. Will be used instead of an HTTP response from the `url`.
+    :type html_override: str or None
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -62,16 +65,21 @@ def get(url, *args, **request_kwargs):
     request_kwargs.setdefault('headers', HEADERS)
     request_kwargs.setdefault('allow_redirects', True)
 
-    response = requests.get(url, **request_kwargs)
-    response.raise_for_status()
+    if html_override is None:
+        response = requests.get(url, **request_kwargs)
+        response.raise_for_status()
+        final_url = response.url
+        html_override = response.text
+    else:
+        final_url = url
 
     icons = set()
 
-    default_icon = default(response.url, **request_kwargs)
+    default_icon = default(final_url, **request_kwargs)
     if default_icon:
         icons.add(default_icon)
 
-    link_icons = tags(response.url, response.text)
+    link_icons = tags(final_url, html_override)
     if link_icons:
         icons.update(link_icons)
 
@@ -182,7 +190,7 @@ def dimensions(tag):
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
-        width, height = re.split(r'[x\xd7]', size[0])
+        width, height = re.split(r'[x\xd7/]', size[0])
     else:
         filename = tag.get('href') or tag.get('content')
         size = SIZE_RE.search(filename)
@@ -195,3 +203,4 @@ def dimensions(tag):
     width = ''.join(c for c in width if c.isdigit())
     height = ''.join(c for c in height if c.isdigit())
     return int(width), int(height)
+
