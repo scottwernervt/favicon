@@ -1,6 +1,19 @@
 Changelog
 =========
 
+0.7.2 (2020-06-27)
+------------------
+
+* Added option for disabling verification by HTTP request of default /favicon.ico file, to have similar behavior
+  to tag-based favicon results.
+* Fixed flaky test.
+
+0.7.1 (2020-06-17)
+------------------
+
+* Added support for receiving HTML input
+* Fixed issue with dimensions(tag) not working for some websites
+
 0.7.0 (2019-08-31)
 ------------------
 

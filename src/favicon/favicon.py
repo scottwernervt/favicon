@@ -40,11 +40,20 @@ SIZE_RE = re.compile(r'(?P<width>\d{2,4})x(?P<height>\d{2,4})', flags=re.IGNOREC
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
-def get(url, *args, **request_kwargs):
+def get(url, *args, html_override=None, verify_default_icon=True, **request_kwargs):
     """Get all fav icons for a url.
 
     :param url: Homepage.
     :type url: str
+
+    :param html_override: HTML input, as string. Will be used instead of an HTTP response from
+        the `url`.
+    :type html_override: str or None
+
+    :param verify_default_icon: Whether to verify the existence of the default
+        https://www.domain.com/favicon.ico file, or to return it as a probable result which
+        still requires verification, like the other results.
+    :type verify_default_icon: bool
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -62,27 +71,37 @@ def get(url, *args, **request_kwargs):
     request_kwargs.setdefault('headers', HEADERS)
     request_kwargs.setdefault('allow_redirects', True)
 
-    response = requests.get(url, **request_kwargs)
-    response.raise_for_status()
+    if html_override is None:
+        response = requests.get(url, **request_kwargs)
+        response.raise_for_status()
+        final_url = response.url
+        html_override = response.text
+    else:
+        final_url = url
 
     icons = set()
 
-    default_icon = default(response.url, **request_kwargs)
+    default_icon = default(final_url, verify_default_icon, **request_kwargs)
     if default_icon:
         icons.add(default_icon)
 
-    link_icons = tags(response.url, response.text)
+    link_icons = tags(final_url, html_override)
     if link_icons:
         icons.update(link_icons)
 
     return sorted(icons, key=lambda i: i.width + i.height, reverse=True)
 
 
-def default(url, **request_kwargs):
+def default(url, verify_default_icon, **request_kwargs):
     """Get icon using default filename favicon.ico.
 
     :param url: Url for site.
     :type url: str
+
+    :param verify_default_icon: Whether to verify the existence of the default
+        https://www.domain.com/favicon.ico file, or to return it as a probable result
+        which still requires verification, like the other results.
+    :type verify_default_icon: bool
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -92,6 +111,9 @@ def default(url, **request_kwargs):
     """
     parsed = urlparse(url)
     favicon_url = urlunparse((parsed.scheme, parsed.netloc, 'favicon.ico', '', '', ''))
+    if not verify_default_icon:
+        return Icon(favicon_url, 0, 0, 'ico')
+
     response = requests.head(favicon_url, **request_kwargs)
     if response.status_code == 200:
         return Icon(response.url, 0, 0, 'ico')
@@ -182,7 +204,7 @@ def dimensions(tag):
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
-        width, height = re.split(r'[x\xd7]', size[0])
+        width, height = re.split(r'[x\xd7/]', size[0])
     else:
         filename = tag.get('href') or tag.get('content')
         size = SIZE_RE.search(filename)

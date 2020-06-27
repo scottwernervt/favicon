@@ -9,4 +9,4 @@ Lead
 Contributors
 ------------
 
-.. * <contributor-name-here>
+.. * Alon Diamant `@advance512 <https://github.com/advance512>`_
