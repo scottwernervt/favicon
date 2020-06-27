@@ -202,6 +202,7 @@ def test_request_kwargs(m):
 def test_is_absolute_helper(url, expected):
     assert is_absolute(url) == expected
 
+
 def test_html_input():
     # contents of mock.com
     mock_com_html = '''<!DOCTYPE html><!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]--><!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]--><!--[if IE 8]><html class="no-js lt-ie9" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]--><!--[if gt IE 8]><!--><html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns#"> <!--<![endif]--><head>    <meta charset="utf-8">    <title>Home - MOCK.com</title>    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <link rel="shortcut icon" type="image/x-icon" href="http://mock.com/wp-content/uploads/2014/03/favicon.ico"/>    <link rel="canonical" href="http://mock.com/"/>    <meta property="og:locale" content="en_US"/>    <meta property="og:type" content="website"/>    <meta property="og:title" content="Home - MOCK.com"/>    <meta property="og:url" content="http://mock.com/"/>    <meta property="og:site_name" content="MOCK.com"/></head><body>Test</body></html>''' # noqa
@@ -211,5 +212,6 @@ def test_html_input():
         html_override=mock_com_html,
     )
     assert icons
+    icons.sort(key=lambda icon: icon.url)
     assert icons[0].url == 'http://mock.com/favicon.ico'
     assert icons[1].url == 'http://mock.com/wp-content/uploads/2014/03/favicon.ico'

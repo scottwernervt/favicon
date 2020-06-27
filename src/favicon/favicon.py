@@ -40,14 +40,20 @@ SIZE_RE = re.compile(r'(?P<width>\d{2,4})x(?P<height>\d{2,4})', flags=re.IGNOREC
 Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
-def get(url, *args, html_override=None, **request_kwargs):
+def get(url, *args, html_override=None, verify_default_icon=True, **request_kwargs):
     """Get all fav icons for a url.
 
     :param url: Homepage.
     :type url: str
 
-    :param html_override: HTML input, as string. Will be used instead of an HTTP response from the `url`.
+    :param html_override: HTML input, as string. Will be used instead of an HTTP response from
+        the `url`.
     :type html_override: str or None
+
+    :param verify_default_icon: Whether to verify the existence of the default
+        https://www.domain.com/favicon.ico file, or to return it as a probable result which
+        still requires verification, like the other results.
+    :type verify_default_icon: bool
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -75,7 +81,7 @@ def get(url, *args, html_override=None, **request_kwargs):
 
     icons = set()
 
-    default_icon = default(final_url, **request_kwargs)
+    default_icon = default(final_url, verify_default_icon, **request_kwargs)
     if default_icon:
         icons.add(default_icon)
 
@@ -86,11 +92,16 @@ def get(url, *args, html_override=None, **request_kwargs):
     return sorted(icons, key=lambda i: i.width + i.height, reverse=True)
 
 
-def default(url, **request_kwargs):
+def default(url, verify_default_icon, **request_kwargs):
     """Get icon using default filename favicon.ico.
 
     :param url: Url for site.
     :type url: str
+
+    :param verify_default_icon: Whether to verify the existence of the default
+        https://www.domain.com/favicon.ico file, or to return it as a probable result
+        which still requires verification, like the other results.
+    :type verify_default_icon: bool
 
     :param request_kwargs: Request headers argument.
     :type request_kwargs: Dict
@@ -100,6 +111,9 @@ def default(url, **request_kwargs):
     """
     parsed = urlparse(url)
     favicon_url = urlunparse((parsed.scheme, parsed.netloc, 'favicon.ico', '', '', ''))
+    if not verify_default_icon:
+        return Icon(favicon_url, 0, 0, 'ico')
+
     response = requests.head(favicon_url, **request_kwargs)
     if response.status_code == 200:
         return Icon(response.url, 0, 0, 'ico')
@@ -203,4 +217,3 @@ def dimensions(tag):
     width = ''.join(c for c in width if c.isdigit())
     height = ''.join(c for c in height if c.isdigit())
     return int(width), int(height)
-
