@@ -62,7 +62,7 @@ def get(url, *args, **request_kwargs):
     request_kwargs.setdefault('headers', HEADERS)
     request_kwargs.setdefault('allow_redirects', True)
 
-    response = requests.get(url, **request_kwargs)
+    response = requests.get(url, timeout=20, **request_kwargs)
     response.raise_for_status()
 
     icons = set()
@@ -92,7 +92,7 @@ def default(url, **request_kwargs):
     """
     parsed = urlparse(url)
     favicon_url = urlunparse((parsed.scheme, parsed.netloc, 'favicon.ico', '', '', ''))
-    response = requests.head(favicon_url, **request_kwargs)
+    response = requests.head(favicon_url, timeout=20, **request_kwargs)
     if response.status_code == 200:
         return Icon(response.url, 0, 0, 'ico')
 
