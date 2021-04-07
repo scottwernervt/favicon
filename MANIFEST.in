@@ -1,5 +1,9 @@
-graft src
-graft tests
+include *.enc
+include *.ini
+include *.rst
+include *.toml
+include *.yaml
+include .flake8
 
 include AUTHORS.rst
 include CHANGELOG.rst
@@ -7,6 +11,9 @@ include CONTRIBUTING.rst
 include LICENSE
 include README.rst
 
-include tox.ini .travis.yml
+recursive-include tests *.png
+recursive-include tests *.py
+recursive-include tests *.txt
 
-global-exclude *.py[cod] __pycache__ *.so *.dylib
+recursive-exclude tests *.pyc
+recursive-exclude tests *.pyo

@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=35.0.2", "wheel>=0.29.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v --tb=short"
+norecursedirs = [
+    ".eggs",
+    ".git",
+    ".pytest_cache",
+    ".tox",
+    "build",
+    "dist",
+    "env",
+    "venv",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist =
+    check
+    lint
+    py27
+    py36
+    py37
+    py38
+    py39
+passenv = *
+commands = pytest {posargs}
+[testenv:check]
+extras =
+    check
+commands =
+    python setup.py sdist
+    twine check dist/*.tar.gz
+    check-manifest -v
+[testenv:lint]
+extras =
+    lint
+commands =
+    pre-commit run --all-files
+"""
+
+[tool.black]
+line-length = 88
+target-version = ["py27", "py36", "py37", "py38"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''

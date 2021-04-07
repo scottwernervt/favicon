@@ -1,16 +1,26 @@
 language: python
-sudo: false
 cache: pip
-install: travis_retry pip install -U tox
-script: tox
+
+install:
+  - pip install tox
+script:
+  - tox -v
 jobs:
   fast_finish: true
   include:
-  - { name: 'check', python: '3.6', env: TOXENV=check }
-  - { name: 'py27', python: '2.7', env: TOXENV=py27 }
-  - { name: 'py34', python: '3.4', env: TOXENV=py34 }
-  - { name: 'py35', python: '3.5', env: TOXENV=py35 }
-  - { name: 'py36', python: '3.6', env: TOXENV=py36 }
-  - { name: 'py37', python: '3.7', env: TOXENV=py37 }
-  - { name: 'py38', python: '3.8', env: TOXENV=py38 }
-  - { name: 'pypy3', python: 'pypy3', env: TOXENV=pypy3 }
+    - { name: 'check', python: '3.8', env: TOXENV=check }
+    - { name: 'lint', python: '3.8', env: TOXENV=lint }
+    - { name: 'py27', python: '2.7', env: TOXENV=py27 }
+    - { name: 'py36', python: '3.6', env: TOXENV=py36 }
+    - { name: 'py37', python: '3.7', env: TOXENV=py37 }
+    - { name: 'py38', python: '3.8', env: TOXENV=py38 }
+    - { name: 'py39', python: '3.9', env: TOXENV=py39 }
+
+after_failure:
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
