@@ -63,7 +63,6 @@ def get(url, *args, **request_kwargs):
     request_kwargs.setdefault('allow_redirects', True)
 
     response = requests.get(url, **request_kwargs)
-    response.raise_for_status()
 
     icons = set()
 
