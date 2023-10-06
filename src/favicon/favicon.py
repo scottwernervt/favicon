@@ -182,7 +182,7 @@ def dimensions(tag):
     if sizes and sizes != 'any':
         size = sizes.split(' ')  # '16x16 32x32 64x64'
         size.sort(reverse=True)
-        width, height = re.split(r'[x\xd7]', size[0])
+        width, height = re.split(r'[x\xd7]', size[0], flags=re.I)
     else:
         filename = tag.get('href') or tag.get('content')
         size = SIZE_RE.search(filename)
